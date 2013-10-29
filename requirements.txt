@@ -1,0 +1,2 @@
+python-instagram==0.8.0
+flickrapi==1.4.2
