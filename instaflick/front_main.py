@@ -1,9 +1,19 @@
+# coding=utf-8
+from flask import render_template, redirect, url_for, request
+from instaflick import app
 from instagram.client import InstagramAPI
 import flickrapi
-import settings
+from . import settings
 from random import choice
 
-def get_from_instagram(search_term):
+@app.route('/')
+def home():
+    return '''Search for your query as domain/i/query for searching from Instagram  or  domain/f/query for searching from Flickr
+    <br/><br/>Flickr search results might be retrieved a bit slow.
+           '''
+
+@app.route('/i/<insta_query>')
+def instagram(insta_query):
     insta_client_id = settings.insta_client_id
     insta_client_secret = settings.insta_client_secret
 
@@ -11,7 +21,7 @@ def get_from_instagram(search_term):
     api = InstagramAPI(insta_client_id, insta_client_secret)  # authenticate
 
     # github.com/Instagram/python-instagram/blob/master/instagram/client.py#L146
-    tag_recent = api.tag_recent_media(count=20, tag_name=search_term)
+    tag_recent = api.tag_recent_media(count=20, tag_name=insta_query)
 
     for media in tag_recent[0]:  # tuple's first index
         urlList_instagram.append(media.images['standard_resolution'].url)
@@ -24,13 +34,15 @@ def get_from_instagram(search_term):
         #if hasattr(media, 'tags'):
             #print "tags----", media.tags
         #print '\n'
-    return choice(urlList_instagram)
+    return "<img src="+choice(urlList_instagram)+">"
 
-def get_from_flickr(search_term):
+
+@app.route('/f/<flickr_query>')
+def flickr(flickr_query):
     flickr_api_key = settings.flickr_app_key
     flickr = flickrapi.FlickrAPI(flickr_api_key)
     photos = flickr.photos_search(
-        tags=search_term, per_page=15, sort='interestingness-desc')
+        tags=flickr_query, per_page=15, sort='interestingness-desc')
 
     photo_iter = photos.iter('photo')
     i = 0
@@ -47,14 +59,5 @@ def get_from_flickr(search_term):
             # check its size
             if size.attrib['label'] == 'Original':
                 urlList_flickr.append(size.attrib['source'])
+    return "<img src="+choice(urlList_flickr)+" width=""600px"">"
 
-    return choice(urlList_flickr)
-
-def main():
-    search_term = raw_input()
-    instagram_url = get_from_instagram(search_term)
-    flickr_url = get_from_flickr(search_term)
-    print instagram_url + '\n' + flickr_url
-
-if __name__ == '__main__':
-    main()
