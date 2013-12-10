@@ -5,6 +5,7 @@ from instagram.client import InstagramAPI
 import flickrapi
 #from . import settings
 from random import choice
+import os
 
 @app.route('/')
 def home():
@@ -14,8 +15,8 @@ def home():
 
 @app.route('/i/<insta_query>')
 def instagram(insta_query):
-    INSTA_CLIENT_ID = ENV['INSTA_CLIENT_ID']
-    INSTA_CLIENT_SECRET = ENV['INSTA_CLIENT_SECRET']
+    INSTA_CLIENT_ID = os.environ['INSTA_CLIENT_ID']
+    INSTA_CLIENT_SECRET = os.environ['INSTA_CLIENT_SECRET']
 
     urlList_instagram = []
     api = InstagramAPI(INSTA_CLIENT_ID, INSTA_CLIENT_SECRET)  # authenticate
@@ -39,7 +40,7 @@ def instagram(insta_query):
 
 @app.route('/f/<flickr_query>')
 def flickr(flickr_query):
-    FLICKR_API_KEY = ENV['FLICKR_API_KEY']
+    FLICKR_API_KEY = os.environ['FLICKR_API_KEY']
     flickr = flickrapi.FlickrAPI(FLICKR_API_KEY)
     photos = flickr.photos_search(
         tags=flickr_query, per_page=15, sort='interestingness-desc')
