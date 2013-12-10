@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, request
 from instaflick import app
 from instagram.client import InstagramAPI
 import flickrapi
-from . import settings
+#from . import settings
 from random import choice
 
 @app.route('/')
