@@ -14,11 +14,11 @@ def home():
 
 @app.route('/i/<insta_query>')
 def instagram(insta_query):
-    insta_client_id = settings.insta_client_id
-    insta_client_secret = settings.insta_client_secret
+    INSTA_CLIENT_ID = ENV['INSTA_CLIENT_ID']
+    INSTA_CLIENT_SECRET = ENV['INSTA_CLIENT_SECRET']
 
     urlList_instagram = []
-    api = InstagramAPI(insta_client_id, insta_client_secret)  # authenticate
+    api = InstagramAPI(INSTA_CLIENT_ID, INSTA_CLIENT_SECRET)  # authenticate
 
     # github.com/Instagram/python-instagram/blob/master/instagram/client.py#L146
     tag_recent = api.tag_recent_media(count=20, tag_name=insta_query)
@@ -39,8 +39,8 @@ def instagram(insta_query):
 
 @app.route('/f/<flickr_query>')
 def flickr(flickr_query):
-    flickr_api_key = settings.flickr_app_key
-    flickr = flickrapi.FlickrAPI(flickr_api_key)
+    FLICKR_API_KEY = ENV['FLICKR_API_KEY']
+    flickr = flickrapi.FlickrAPI(FLICKR_API_KEY)
     photos = flickr.photos_search(
         tags=flickr_query, per_page=15, sort='interestingness-desc')
 
