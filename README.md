@@ -2,13 +2,7 @@ instaflick
 ==========
 <i>Quick and dirty script to retrieve photograph urls from instagram and flickr for a given search term</i>
 
+* To get photos from instagram, go to [instaflick.herokuapp.com/i/your_search_term](instaflick.herokuapp.com/i/your_search_term)
 
-##Installation & Running
+* To get photos from flickr, go to [instaflick.herokuapp.com/f/your_search_term](instaflick.herokuapp.com/f/your_search_term)
 
-  - Clone this repo
-  - Obtain flickr and instagram app keys
-  - Edit config file (```settings.py.example```)
-  - Rename ```settings.py.example``` >> ```settings.py```
-  - Run ```python instaflick.py```
-  - It gets the search term from stdin. Type anything as a search term (e.g cheesecake)
-  - Wait
